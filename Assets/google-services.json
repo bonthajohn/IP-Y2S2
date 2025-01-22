@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "111245713297",
+    "firebase_url": "https://ip2025--a-sweet-escape-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "ip2025--a-sweet-escape",
+    "storage_bucket": "ip2025--a-sweet-escape.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111245713297:android:3560cd068fcfe5aea48430",
+        "android_client_info": {
+          "package_name": "com.IMmerge.Asweetescape"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4fS6sq9Vv0FFi8TX6ofU7xLUw__TDiFE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
