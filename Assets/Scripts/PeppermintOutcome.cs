@@ -7,6 +7,7 @@ public class PeppermintOutcome : MonoBehaviour
     public string supabaseUrl = "https://<your-project-ref>.supabase.co"; // Replace with your Supabase URL
     public string bucketName = "<your-bucket-name>"; // Replace with your Supabase bucket name
     public string[] imagePaths; // Array of image paths inside the "Peppermint Puzzle Path" folder
+    public GameObject[] prefabs; // Array of prefabs corresponding to the image paths
     public string supabaseAnonKey = "<your-anon-key>"; // Replace with your Supabase anon key
     public Renderer targetRenderer; // The renderer to which the texture will be applied
 
@@ -18,8 +19,15 @@ public class PeppermintOutcome : MonoBehaviour
             return;
         }
 
+        if (imagePaths.Length != prefabs.Length)
+        {
+            Debug.LogError("The number of image paths must match the number of prefabs.");
+            return;
+        }
+
         // Randomly pick an image from the array
-        string randomImagePath = GetRandomImagePath();
+        int randomIndex = GetRandomImageIndex();
+        string randomImagePath = imagePaths[randomIndex];
 
         // Ensure the image paths are under the "Peppermint Puzzle Path" folder
         string fullImagePath = $"Peppermint Puzzle Path/{randomImagePath}";
@@ -33,6 +41,9 @@ public class PeppermintOutcome : MonoBehaviour
             {
                 targetRenderer.material.mainTexture = texture;
                 Debug.Log("Texture applied successfully.");
+
+                // Unhide the corresponding prefab
+                UnhidePrefab(randomIndex);
             }
             else
             {
@@ -45,17 +56,16 @@ public class PeppermintOutcome : MonoBehaviour
         }
     }
 
-    // Method to randomly select an image path from the list
-    private string GetRandomImagePath()
+    // Method to randomly select an image index from the list
+    private int GetRandomImageIndex()
     {
         if (imagePaths.Length == 0)
         {
             Debug.LogError("No image paths provided.");
-            return null;
+            return -1;
         }
 
-        int randomIndex = Random.Range(0, imagePaths.Length);
-        return imagePaths[randomIndex];
+        return Random.Range(0, imagePaths.Length);
     }
 
     private async Task<Texture2D> GetTextureFromURL(string url)
@@ -81,6 +91,27 @@ public class PeppermintOutcome : MonoBehaviour
                 Debug.LogError($"Error in UnityWebRequest: {request.error}");
                 return null;
             }
+        }
+    }
+
+    // Method to unhide the corresponding prefab
+    private void UnhidePrefab(int index)
+    {
+        if (index < 0 || index >= prefabs.Length)
+        {
+            Debug.LogError("Invalid prefab index.");
+            return;
+        }
+
+        GameObject prefab = prefabs[index];
+        if (prefab != null)
+        {
+            prefab.SetActive(true); // Unhide the prefab
+            Debug.Log($"Prefab {prefab.name} has been activated.");
+        }
+        else
+        {
+            Debug.LogError($"Prefab at index {index} is null.");
         }
     }
 }
