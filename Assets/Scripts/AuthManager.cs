@@ -143,41 +143,32 @@ public class AuthManager : MonoBehaviour
                     }
                     else
                     {
-                        // Save user data dynamically based on the structure
-                        UserStats newUserStats = new UserStats();
-                        StartCoroutine(SaveUserData(_username, User.UserId, newUserStats));
+                        StartCoroutine(SaveUserData(_username, User.UserId));
                         warningRegisterText.text = "";
+                        UIManager.instance.LoginScreen();
                     }
                 }
             }
         }
     }
 
-    // Dynamically save user data based on the format you want
-    private IEnumerator SaveUserData(string username, string uid, UserStats userStats)
+    // Save user data to Firebase
+    private IEnumerator SaveUserData(string username, string uid)
     {
-        // Structure data based on the provided JSON format
-        var userData = new Dictionary<string, object>
-    {
-        { "name", username },
-        { "email", User.Email }, // Assuming the email is set by the Auth system
-        { "totalScore", 0 }, // Default score
-        { "badges", new List<string>() },
-        { "progress", new Dictionary<string, object>
-            {
-                { "peppermintPuzzle", new Dictionary<string, object> { { "status", "in_progress" }, { "score", 0 } } },
-                { "chocolateCounting", new Dictionary<string, object> { { "status", "in_progress" }, { "score", 0 } } }
-            }
-        },
-        { "screenshotPath", "" } // Placeholder for screenshot path, which is an empty string by default
-    };
+        // Create an instance of the Progress class
+        Progress progress = new Progress();
 
-        // You can update this placeholder value dynamically later if needed
-        string screenshotPath = "path/to/placeholder/screenshot.png"; // Example path
-        userData["screenshotPath"] = screenshotPath; // Set the screenshot path dynamically
+        // Create a dictionary for the user data
+        var playerData = new Dictionary<string, object>
+        {
+            { "name", username },
+            { "Uid", uid },
+            { "badges", new List<string>() }, // List of badges can be populated later if needed
+            { "progress", progress.ToDictionary() } // Convert progress to a dictionary to store
+        };
 
         // Save player data to Firebase using userId (uid) as the key
-        var saveTask = dbReference.Child("users").Child(uid).SetValueAsync(userData);
+        var saveTask = dbReference.Child("Players").Child(uid).SetValueAsync(playerData);
         yield return new WaitUntil(() => saveTask.IsCompleted);
 
         if (saveTask.Exception != null)
@@ -189,17 +180,26 @@ public class AuthManager : MonoBehaviour
             Debug.Log("Player data saved successfully.");
         }
     }
+}
 
+// Progress class to handle progress data dynamically
+[System.Serializable]
+public class Progress
+{
+    public Dictionary<string, object> gameProgress;
 
-    [System.Serializable]
-    public class UserStats
+    public Progress()
     {
-        public int totalScore = 0;
-        public List<string> badges = new List<string>();
-        public Dictionary<string, object> progress = new Dictionary<string, object>
+        gameProgress = new Dictionary<string, object>
         {
             { "peppermintPuzzle", new Dictionary<string, object> { { "status", "in_progress" }, { "score", 0 } } },
             { "chocolateCounting", new Dictionary<string, object> { { "status", "in_progress" }, { "score", 0 } } }
         };
+    }
+
+    // Convert the progress data to a dictionary
+    public Dictionary<string, object> ToDictionary()
+    {
+        return gameProgress;
     }
 }
