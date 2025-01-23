@@ -11,6 +11,7 @@ TagManager:
   - BlueJellybean
   - GreenJellybean
   - PurpleJellybean
+  - Scorable
   layers:
   - Default
   - TransparentFX
