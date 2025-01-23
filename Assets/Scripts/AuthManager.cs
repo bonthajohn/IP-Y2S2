@@ -145,7 +145,6 @@ public class AuthManager : MonoBehaviour
                     {
                         StartCoroutine(SaveUserData(_username, User.UserId));
                         warningRegisterText.text = "";
-                        UIManager.instance.LoginScreen();
                     }
                 }
             }
