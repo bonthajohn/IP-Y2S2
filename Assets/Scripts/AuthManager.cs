@@ -18,8 +18,8 @@ public class AuthManager : MonoBehaviour
 
     // Login variables
     [Header("Login")]
-    public TMP_InputField emailLoginField;
-    public TMP_InputField passwordLoginField;
+    public TMP_InputField loginField; // Both username or email input
+    public TMP_InputField passwordLoginField; // Password field
     public TMP_Text warningLoginText;
     public TMP_Text confirmLoginText;
 
@@ -54,25 +54,76 @@ public class AuthManager : MonoBehaviour
         dbReference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
+    // Unified function for login (email or username)
     public void LoginButton()
     {
-        StartCoroutine(Login(emailLoginField.text, passwordLoginField.text));
+        StartCoroutine(Login(loginField.text, passwordLoginField.text));
     }
 
-    public void RegisterButton()
+    private IEnumerator Login(string loginInput, string password)
     {
-        StartCoroutine(Register(emailRegisterField.text, passwordRegisterField.text, usernameRegisterField.text));
-    }
-
-    private IEnumerator Login(string _email, string _password)
-    {
-        Task<AuthResult> LoginTask = auth.SignInWithEmailAndPasswordAsync(_email, _password);
-        yield return new WaitUntil(() => LoginTask.IsCompleted);
-
-        if (LoginTask.Exception != null)
+        if (string.IsNullOrEmpty(loginInput))
         {
-            Debug.LogWarning($"Failed to login task with {LoginTask.Exception}");
-            FirebaseException firebaseEx = LoginTask.Exception.GetBaseException() as FirebaseException;
+            warningLoginText.text = "Missing username/email";
+            yield break;
+        }
+
+        if (IsEmail(loginInput))
+        {
+            // If it's an email, directly attempt to login with email
+            StartCoroutine(LoginWithEmail(loginInput, password));
+        }
+        else
+        {
+            // If it's a username, retrieve the associated email from the database and then login
+            StartCoroutine(LoginWithUsername(loginInput, password));
+        }
+    }
+
+    private bool IsEmail(string input)
+    {
+        return input.Contains("@");
+    }
+
+    private IEnumerator LoginWithUsername(string username, string password)
+    {
+        // Get the user ID from the username
+        var getUserIdTask = dbReference.Child("Usernames").Child(username).GetValueAsync();
+        yield return new WaitUntil(() => getUserIdTask.IsCompleted);
+
+        if (getUserIdTask.Exception != null || !getUserIdTask.Result.Exists)
+        {
+            warningLoginText.text = "Username not found!";
+            yield break;
+        }
+
+        string userId = getUserIdTask.Result.Value.ToString();
+
+        // Get the email associated with the user ID
+        var getEmailTask = dbReference.Child("Players").Child(userId).Child("email").GetValueAsync();
+        yield return new WaitUntil(() => getEmailTask.IsCompleted);
+
+        if (getEmailTask.Exception != null || !getEmailTask.Result.Exists)
+        {
+            warningLoginText.text = "Failed to retrieve user email!";
+            yield break;
+        }
+
+        string email = getEmailTask.Result.Value.ToString();
+
+        // Now login using the retrieved email
+        StartCoroutine(LoginWithEmail(email, password));
+    }
+
+    private IEnumerator LoginWithEmail(string email, string password)
+    {
+        Task<AuthResult> loginTask = auth.SignInWithEmailAndPasswordAsync(email, password);
+        yield return new WaitUntil(() => loginTask.IsCompleted);
+
+        if (loginTask.Exception != null)
+        {
+            Debug.LogWarning($"Failed to login task with {loginTask.Exception}");
+            FirebaseException firebaseEx = loginTask.Exception.GetBaseException() as FirebaseException;
             AuthError errorCode = (AuthError)firebaseEx.ErrorCode;
 
             string message = "Login Failed!";
@@ -88,7 +139,7 @@ public class AuthManager : MonoBehaviour
         }
         else
         {
-            User = LoginTask.Result.User;
+            User = loginTask.Result.User;
             Debug.LogFormat("User signed in successfully: {0} ({1})", User.DisplayName, User.Email);
             warningLoginText.text = "";
             confirmLoginText.text = "Logged In";
@@ -97,76 +148,85 @@ public class AuthManager : MonoBehaviour
 
     private IEnumerator Register(string _email, string _password, string _username)
     {
-        if (_username == "")
+        if (string.IsNullOrEmpty(_username))
         {
             warningRegisterText.text = "Missing Username";
+            yield break;
         }
-        else if (passwordRegisterField.text != passwordRegisterVerifyField.text)
+        if (_password != passwordRegisterVerifyField.text)
         {
-            warningRegisterText.text = "Password Does Not Match!";
+            warningRegisterText.text = "Passwords do not match!";
+            yield break;
+        }
+
+        Task<AuthResult> registerTask = auth.CreateUserWithEmailAndPasswordAsync(_email, _password);
+        yield return new WaitUntil(() => registerTask.IsCompleted);
+
+        if (registerTask.Exception != null)
+        {
+            Debug.LogWarning($"Failed to register task with {registerTask.Exception}");
+            FirebaseException firebaseEx = registerTask.Exception.GetBaseException() as FirebaseException;
+            AuthError errorCode = (AuthError)firebaseEx.ErrorCode;
+
+            string message = "Register Failed!";
+            switch (errorCode)
+            {
+                case AuthError.MissingEmail: message = "Missing Email"; break;
+                case AuthError.MissingPassword: message = "Missing Password"; break;
+                case AuthError.WeakPassword: message = "Weak Password"; break;
+                case AuthError.EmailAlreadyInUse: message = "Email Already In Use"; break;
+            }
+            warningRegisterText.text = message;
         }
         else
         {
-            Task<AuthResult> RegisterTask = auth.CreateUserWithEmailAndPasswordAsync(_email, _password);
-            yield return new WaitUntil(() => RegisterTask.IsCompleted);
+            User = registerTask.Result.User;
 
-            if (RegisterTask.Exception != null)
+            if (User != null)
             {
-                Debug.LogWarning($"Failed to register task with {RegisterTask.Exception}");
-                FirebaseException firebaseEx = RegisterTask.Exception.GetBaseException() as FirebaseException;
-                AuthError errorCode = (AuthError)firebaseEx.ErrorCode;
+                UserProfile profile = new UserProfile { DisplayName = _username };
+                Task ProfileTask = User.UpdateUserProfileAsync(profile);
+                yield return new WaitUntil(() => ProfileTask.IsCompleted);
 
-                string message = "Register Failed!";
-                switch (errorCode)
+                if (ProfileTask.Exception != null)
                 {
-                    case AuthError.MissingEmail: message = "Missing Email"; break;
-                    case AuthError.MissingPassword: message = "Missing Password"; break;
-                    case AuthError.WeakPassword: message = "Weak Password"; break;
-                    case AuthError.EmailAlreadyInUse: message = "Email Already In Use"; break;
+                    Debug.LogWarning($"Failed to update profile: {ProfileTask.Exception}");
+                    warningRegisterText.text = "Username Set Failed!";
                 }
-                warningRegisterText.text = message;
-            }
-            else
-            {
-                User = RegisterTask.Result.User;
-
-                if (User != null)
+                else
                 {
-                    UserProfile profile = new UserProfile { DisplayName = _username };
-                    Task ProfileTask = User.UpdateUserProfileAsync(profile);
-                    yield return new WaitUntil(() => ProfileTask.IsCompleted);
-
-                    if (ProfileTask.Exception != null)
-                    {
-                        Debug.LogWarning($"Failed to register task with {ProfileTask.Exception}");
-                        warningRegisterText.text = "Username Set Failed!";
-                    }
-                    else
-                    {
-                        StartCoroutine(SaveUserData(_username, User.UserId));
-                        warningRegisterText.text = "";
-                    }
+                    Debug.Log($"Successfully created user: {User.DisplayName}, UID: {User.UserId}");
+                    StartCoroutine(SaveUserData(_username, _email, User.UserId));
+                    warningRegisterText.text = "Registration Successful!";
                 }
             }
         }
     }
 
-    // Save user data to Firebase
-    private IEnumerator SaveUserData(string username, string uid)
+    private IEnumerator SaveUserData(string username, string email, string uid)
     {
-        // Create an instance of the Progress class
         Progress progress = new Progress();
 
-        // Create a dictionary for the user data
         var playerData = new Dictionary<string, object>
         {
             { "name", username },
             { "Uid", uid },
-            { "badges", new List<string>() }, // List of badges can be populated later if needed
-            { "progress", progress.ToDictionary() } // Convert progress to a dictionary to store
+            { "email", email },
+            { "badges", new List<string>() },
+            { "progress", progress.ToDictionary() }
         };
 
-        // Save player data to Firebase using userId (uid) as the key
+        // Save username-to-UID mapping
+        var usernameMappingTask = dbReference.Child("Usernames").Child(username).SetValueAsync(uid);
+        yield return new WaitUntil(() => usernameMappingTask.IsCompleted);
+
+        if (usernameMappingTask.Exception != null)
+        {
+            Debug.LogWarning($"Failed to save username mapping: {usernameMappingTask.Exception}");
+            yield break;
+        }
+
+        // Save user data
         var saveTask = dbReference.Child("Players").Child(uid).SetValueAsync(playerData);
         yield return new WaitUntil(() => saveTask.IsCompleted);
 
@@ -196,7 +256,6 @@ public class Progress
         };
     }
 
-    // Convert the progress data to a dictionary
     public Dictionary<string, object> ToDictionary()
     {
         return gameProgress;
