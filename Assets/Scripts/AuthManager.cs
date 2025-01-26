@@ -54,6 +54,11 @@ public class AuthManager : MonoBehaviour
         dbReference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
+    public void RegisterButton()
+    {
+        StartCoroutine(Register(emailRegisterField.text, passwordRegisterField.text, usernameRegisterField.text));
+    }
+
     // Unified function for login (email or username)
     public void LoginButton()
     {
