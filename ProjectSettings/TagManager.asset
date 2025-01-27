@@ -12,6 +12,7 @@ TagManager:
   - GreenJellybean
   - PurpleJellybean
   - Scorable
+  - Card
   layers:
   - Default
   - TransparentFX
