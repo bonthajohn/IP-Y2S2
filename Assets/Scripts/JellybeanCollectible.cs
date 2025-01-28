@@ -25,7 +25,7 @@ public class JellybeanCollectible : MonoBehaviour
         else
         {
             // If the litter does not match the bin, show the "Incorrect bin!" message
-            ShowFeedback("Incorrect bin!");
+            ShowFeedback("Incorrect jar!");
         }
     }
 
