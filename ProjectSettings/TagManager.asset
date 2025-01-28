@@ -12,6 +12,7 @@ TagManager:
   - GreenJellybean
   - PurpleJellybean
   - Scorable
+  - Puzzle1
   layers:
   - Default
   - TransparentFX

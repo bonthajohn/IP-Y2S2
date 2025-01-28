@@ -75,7 +75,7 @@ public class ScreenshotManager : MonoBehaviour
         }
 
         // Capture the screenshot
-        string screenshotName = $"screenshot_{DateTime.Now:yyyyMMdd_HHmmss}.png";
+        string screenshotName = $"screenshot_{DateTime.Now:yyyyMMdd_HHmmss}.jpeg";
         string filePath = Path.Combine(Application.persistentDataPath, screenshotName);
 
         int width = Screen.width;
@@ -94,7 +94,7 @@ public class ScreenshotManager : MonoBehaviour
         RenderTexture.active = null;
         Destroy(renderTexture);
 
-        byte[] imageData = screenshot.EncodeToPNG();
+        byte[] imageData = screenshot.EncodeToJPG(100); // Encode as JPEG
         File.WriteAllBytes(filePath, imageData);
         Debug.Log($"Screenshot saved: {filePath}");
 
@@ -109,10 +109,10 @@ public class ScreenshotManager : MonoBehaviour
             string uploadUrl = $"{supabaseUrl}/storage/v1/object/{folderPath}/{screenshotName}";
 
             UnityWebRequest request = new UnityWebRequest(uploadUrl, "POST");
-            request.uploadHandler = new UploadHandlerRaw(File.ReadAllBytes(filePath));
+            request.uploadHandler = new UploadHandlerRaw(imageData); // Use the byte array directly
             request.downloadHandler = new DownloadHandlerBuffer();
             request.SetRequestHeader("Authorization", $"Bearer {supabaseKey}");
-            request.SetRequestHeader("Content-Type", "application/octet-stream");
+            request.SetRequestHeader("Content-Type", "image/jpeg"); // Correct MIME type for JPEG
 
             yield return request.SendWebRequest();
 
@@ -137,6 +137,7 @@ public class ScreenshotManager : MonoBehaviour
         }
     }
 
+
     private void SaveScreenshotUrlToFirebase(string imageUrl)
     {
         if (authManager.auth.CurrentUser == null)
@@ -146,13 +147,19 @@ public class ScreenshotManager : MonoBehaviour
         }
 
         string userId = authManager.auth.CurrentUser.UserId;
-        DatabaseReference playerRef = authManager.dbReference.Child("Players").Child(userId).Child("screenshots");
+        string username = authManager.auth.CurrentUser.DisplayName ?? "UnknownUser"; // Retrieve the username (or a default if null)
 
-        playerRef.Push().SetValueAsync(imageUrl).ContinueWith(task =>
+        // Reference to the "Screenshots" node with the username as a header
+        DatabaseReference screenshotRef = authManager.dbReference
+            .Child("Screenshots")
+            .Child(username)
+            .Child("images");
+
+        screenshotRef.Push().SetValueAsync(imageUrl).ContinueWith(task =>
         {
             if (task.IsCompleted)
             {
-                Debug.Log("Screenshot URL successfully saved to Firebase Database.");
+                Debug.Log("Screenshot URL successfully saved to Firebase Database under the username.");
             }
             else
             {
@@ -160,4 +167,18 @@ public class ScreenshotManager : MonoBehaviour
             }
         });
     }
+
+    private void Awake()
+    {
+        // Ensure only one instance of this object exists
+        if (FindObjectsOfType<ScreenshotManager>().Length > 1)
+        {
+            Destroy(gameObject); // Destroy duplicate instance
+            return;
+        }
+
+        DontDestroyOnLoad(gameObject); // Make this object persistent across scenes
+    }
+
+
 }
