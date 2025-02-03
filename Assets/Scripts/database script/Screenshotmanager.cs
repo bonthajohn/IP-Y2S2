@@ -40,6 +40,8 @@ public class ScreenshotManager : MonoBehaviour
 
     private void Update()
     {
+        Gamepad gamepad = Gamepad.current;
+
         // Block screenshot input entirely if the user is not logged in
         if (authManager.auth.CurrentUser == null)
         {
@@ -47,7 +49,9 @@ public class ScreenshotManager : MonoBehaviour
         }
 
         // Check for screenshot input only when the user is logged in
-        if (keyboard != null && keyboard.bKey.wasPressedThisFrame)
+
+        if ((keyboard != null && keyboard.eKey.wasPressedThisFrame) ||
+            (gamepad != null && gamepad.buttonSouth.wasPressedThisFrame))
         {
             TakeScreenshot();
         }

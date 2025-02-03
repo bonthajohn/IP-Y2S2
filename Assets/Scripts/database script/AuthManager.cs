@@ -31,8 +31,35 @@ public class AuthManager : MonoBehaviour
     public TMP_InputField passwordRegisterVerifyField;
     public TMP_Text warningRegisterText;
 
+    private static AuthManager instance;
+
+
+    void Start()
+    {
+        if (auth.CurrentUser != null)
+        {
+            Debug.Log($"Player is still logged in: {auth.CurrentUser.Email}");
+        }
+        else
+        {
+            Debug.Log("No user is logged in.");
+        }
+    }
+
+
     void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
         {
             dependencyStatus = task.Result;
@@ -45,6 +72,20 @@ public class AuthManager : MonoBehaviour
                 Debug.LogError("Could not resolve all Firebase dependencies: " + dependencyStatus);
             }
         });
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
+        {
+            dependencyStatus = task.Result;
+            if (dependencyStatus == DependencyStatus.Available)
+            {
+                InitializeFirebase();
+            }
+            else
+            {
+                Debug.LogError("Could not resolve all Firebase dependencies: " + dependencyStatus);
+            }
+        });
+
+
     }
 
     private void InitializeFirebase()
@@ -211,15 +252,15 @@ public class AuthManager : MonoBehaviour
     private IEnumerator SaveUserData(string username, string email, string uid)
     {
         Progress progress = new Progress();
+        var progressData = progress.ToDictionary();
 
         var playerData = new Dictionary<string, object>
-        {
-            { "name", username },
-            { "Uid", uid },
-            { "email", email },
-            { "badges", new List<string>() },
-            { "progress", progress.ToDictionary() }
-        };
+    {
+        { "name", username },
+        { "Uid", uid },
+        { "email", email },
+        { "badges", new List<string>() }
+    };
 
         // Save username-to-UID mapping
         var usernameMappingTask = dbReference.Child("Usernames").Child(username).SetValueAsync(uid);
@@ -231,19 +272,30 @@ public class AuthManager : MonoBehaviour
             yield break;
         }
 
-        // Save user data
-        var saveTask = dbReference.Child("Players").Child(uid).SetValueAsync(playerData);
-        yield return new WaitUntil(() => saveTask.IsCompleted);
+        // Save user data (excluding progress)
+        var savePlayerTask = dbReference.Child("Players").Child(uid).SetValueAsync(playerData);
+        yield return new WaitUntil(() => savePlayerTask.IsCompleted);
 
-        if (saveTask.Exception != null)
+        if (savePlayerTask.Exception != null)
         {
-            Debug.LogWarning($"Failed to save player data: {saveTask.Exception}");
+            Debug.LogWarning($"Failed to save player data: {savePlayerTask.Exception}");
+            yield break;
+        }
+
+        // Save progress data separately
+        var saveProgressTask = dbReference.Child("Progress").Child(username).SetValueAsync(progressData);
+        yield return new WaitUntil(() => saveProgressTask.IsCompleted);
+
+        if (saveProgressTask.Exception != null)
+        {
+            Debug.LogWarning($"Failed to save progress data: {saveProgressTask.Exception}");
         }
         else
         {
-            Debug.Log("Player data saved successfully.");
+            Debug.Log("Player data and progress saved successfully.");
         }
     }
+
 }
 
 // Progress class to handle progress data dynamically
@@ -256,8 +308,10 @@ public class Progress
     {
         gameProgress = new Dictionary<string, object>
         {
-            { "peppermintPuzzle", new Dictionary<string, object> { { "status", "in_progress" }, { "score", 0 } } },
-            { "chocolateCounting", new Dictionary<string, object> { { "status", "in_progress" }, { "score", 0 } } }
+            { "peppermintPuzzle", new Dictionary<string, object> { { "status", "not_played" }, { "playedTime", 0 } } },
+            { "chocolateCounting", new Dictionary<string, object> { { "status", "not_played" }, { "playedTime", 0 } } },
+            { "candyWrapperSpelling", new Dictionary<string, object> { { "status", "not_played" }, { "playedTime", 0 } } },
+            { "jellybeanColorMatching", new Dictionary<string, object> { { "status", "not_played" }, { "playedTime", 0 } } }
         };
     }
 
