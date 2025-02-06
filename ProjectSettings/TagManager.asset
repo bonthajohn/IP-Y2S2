@@ -6,6 +6,15 @@ TagManager:
   tags:
   - Anchor
   - CarPart
+  - TAZOFX
+  - GreenJellybean
+  - PurpleJellybean
+  - OrangeJellybean
+  - BlueJellybean
+  - YellowJellybean
+  - RedJellybean
+  - Scorable
+  - Card
   layers:
   - Default
   - TransparentFX
