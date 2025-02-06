@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Anchor
   - CarPart
+  - Puzzle1
+  - Letter
   layers:
   - Default
   - TransparentFX

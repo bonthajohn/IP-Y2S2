@@ -5,126 +5,238 @@ using TMPro;
 
 public class WordGame : MonoBehaviour
 {
-    public TextMeshProUGUI wordText;   // UI Text to display the puzzle word
-    public GameObject letterPrefab;    // Prefab for draggable letters
+    public TextMeshProUGUI wordText;
+    public TextMeshProUGUI timerText;
+    public GameObject letterPrefab;
+    public Transform letterSpawnArea;
 
-    private List<string> words = new List<string>(); // List to store words
+    public int totalSpawnedLetters = 5;
+    public float gameDuration = 60f;
+
+    private List<string> easyWords = new List<string>() { "cat", "dog", "hat", "bat", "sun" };
+    private List<string> mediumWords = new List<string>() { "banana", "cherry", "pencil", "orange", "rocket" };
+    private List<string> hardWords = new List<string>() { "elephant", "computer", "umbrella", "airplane", "mountain" };
+
+    private List<string> currentWordList = new List<string>();
     private string currentWord;
-    private string puzzleWord;           // Word with missing letters
-    private List<char> missingLetters = new List<char>(); // Stores missing letters
+    private string puzzleWord;
+    private List<char> missingLetters = new List<char>();
+    private List<int> missingLetterPositions = new List<int>();
+
+    private List<char> wrongLetterPool = new List<char>() { 'X', 'Y', 'Z', 'Q', 'V', 'J', 'K', 'M', 'W' };
+
+    private bool gameActive = false;
+    private float timeRemaining;
+    private int currentWordIndex = 0; // Keeps track of the current word in the list
 
     void Start()
     {
-        // Static word list (you can add more words here)
-        words.Add("apple");
-        words.Add("banana");
-        words.Add("cherry");
-        words.Add("elephant");
-        words.Add("computer");
-
-        GenerateNewWord(); // Generate a word puzzle when the game starts
+        // Game starts when the player chooses difficulty
     }
 
-    void GenerateNewWord()
+    public void StartGame(float duration)
     {
-        if (words.Count == 0) return;
+        gameDuration = duration;
+        timeRemaining = gameDuration;
+        gameActive = true;
+        currentWordIndex = 0; // Reset the word index when starting the game
 
-        int randomIndex = Random.Range(0, words.Count);  // Pick a random word
-        currentWord = words[randomIndex]; // Get the random word
-
-        puzzleWord = CreatePuzzleWord(currentWord); // Generate the word with missing letters
-        wordText.text = puzzleWord; // Display it on the UI
-        missingLetters.Clear(); // Reset missing letters list
-
-        GenerateLetterObjects(); // Spawn missing letters as objects
+        UpdateTimerUI(); // Show initial time
+        SetWordToPlay(); // Set the first word
+        StartCoroutine(GameTimer());
     }
 
-    string CreatePuzzleWord(string word)
+    private void SetWordToPlay()
     {
-        char[] puzzleArray = word.ToCharArray();
-        int missingCount = Mathf.Max(1, word.Length / 3); // Remove 1/3 of letters (at least 1)
-
-        for (int i = 0; i < missingCount; i++)
+        if (currentWordList.Count > 0 && currentWordIndex < currentWordList.Count)
         {
-            int randomIndex = Random.Range(0, word.Length);
-            if (puzzleArray[randomIndex] != '_') // Ensure unique letters are removed
-            {
-                missingLetters.Add(word[randomIndex]); // Store the missing letter
-                puzzleArray[randomIndex] = '_'; // Replace with _
-            }
-        }
-
-        return new string(puzzleArray);
-    }
-
-    void GenerateLetterObjects()
-    {
-        // Clear any existing objects before generating new ones
-        Transform existingLetters = transform.Find("Letters");
-        if (existingLetters != null)
-        {
-            DestroyImmediate(existingLetters.gameObject); // Clean up previous letters
-        }
-
-        // Create an empty container to hold the spawned letters in the Hierarchy
-        GameObject lettersContainer = new GameObject("Letters");
-        lettersContainer.transform.SetParent(transform);
-
-        foreach (char letter in missingLetters)
-        {
-            // Debug log to see when we start spawning letters
-            Debug.Log($"Spawning letter: {letter}");
-
-            // Instantiate the letter prefab at a random position
-            GameObject letterObj = Instantiate(letterPrefab, RandomSpawnPosition(), Quaternion.identity);
-
-            if (letterObj != null)
-            {
-                // Set the letter's text
-                letterObj.GetComponentInChildren<TextMeshPro>().text = letter.ToString();
-
-                // Add rigidbody for interaction (optional)
-                letterObj.AddComponent<Rigidbody>();
-                letterObj.AddComponent<BoxCollider>();
-
-                // Set the tag for detection
-                letterObj.tag = "Letter";
-
-                // Set this letter as a child of the container to keep it organized in the hierarchy
-                letterObj.transform.SetParent(lettersContainer.transform);
-            }
-            else
-            {
-                Debug.LogError("Failed to instantiate letter prefab.");
-            }
+            currentWord = currentWordList[currentWordIndex];
+            puzzleWord = CreatePuzzleWord(currentWord);
+            wordText.text = puzzleWord;
+            SpawnLetterChoices();
         }
     }
 
-    Vector3 RandomSpawnPosition()
+    private IEnumerator GameTimer()
     {
-        // Ensure the spawned objects are within camera view
-        float xPos = Random.Range(-5f, 5f);
-        float zPos = Random.Range(-5f, 5f);
-        return new Vector3(xPos, 1f, zPos); // Adjust the y value if needed
+        while (timeRemaining > 0)
+        {
+            yield return new WaitForSeconds(1);
+            timeRemaining -= 1;
+            UpdateTimerUI(); // Update the timer display every second
+        }
+
+        EndGame();
+    }
+
+    private void UpdateTimerUI()
+    {
+        if (timerText != null)
+        {
+            timerText.text = "Time: " + Mathf.Ceil(timeRemaining).ToString() + "s";
+        }
+    }
+
+    public void EndGame()
+    {
+        gameActive = false;
+        Debug.Log("⏳ Time is up! Game Over.");
+
+        if (timerText != null)
+        {
+            timerText.text = "Game Over!";
+        }
+    }
+
+    public void SetEasyDifficulty()
+    {
+        SetDifficulty(easyWords);
+    }
+
+    public void SetMediumDifficulty()
+    {
+        SetDifficulty(mediumWords);
+    }
+
+    public void SetHardDifficulty()
+    {
+        SetDifficulty(hardWords);
+    }
+
+    private void SetDifficulty(List<string> wordList)
+    {
+        currentWordList = new List<string>(wordList);
+        StartGame(gameDuration); // Start the game with the given difficulty level
+    }
+
+    private void CheckForCompletion()
+    {
+        if (missingLetters.Count == 0 && gameActive)
+        {
+            Debug.Log("✅ Word Completed!");
+
+            // Wait for a short moment to complete the current word before moving on
+            Invoke("MoveToNextWord", 1f);
+        }
+    }
+
+    private void MoveToNextWord()
+    {
+        if (currentWordIndex < currentWordList.Count - 1)
+        {
+            currentWordIndex++; // Go to the next word in the list
+            SetWordToPlay(); // Load the next word
+        }
+        else
+        {
+            Debug.Log("✅ All words completed!");
+            EndGame(); // End the game if all words are completed
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Letter"))
         {
-            string placedLetter = other.GetComponentInChildren<TextMeshPro>().text;
-            if (missingLetters.Contains(placedLetter[0])) // Check if letter is needed
-            {
-                missingLetters.Remove(placedLetter[0]); // Mark as placed
-                Destroy(other.gameObject); // Remove from scene
+            LetterObject letterScript = other.GetComponent<LetterObject>();
 
-                // Check if all missing letters are placed
-                if (missingLetters.Count == 0)
+            if (letterScript != null)
+            {
+                char placedLetter = letterScript.GetLetter();
+
+                if (missingLetters.Contains(placedLetter))
                 {
-                    wordText.text = currentWord; // Display full word
-                    Debug.Log("✅ Word Completed!");
+                    int letterIndex = missingLetters.IndexOf(placedLetter);
+                    int correctPosition = missingLetterPositions[letterIndex];
+
+                    char[] puzzleArray = wordText.text.ToCharArray();
+                    puzzleArray[correctPosition] = placedLetter;
+                    wordText.text = new string(puzzleArray);
+
+                    missingLetters.RemoveAt(letterIndex);
+                    missingLetterPositions.RemoveAt(letterIndex);
+
+                    CheckForCompletion();
+
+                    Destroy(other.gameObject);
                 }
             }
         }
+    }
+
+    private string CreatePuzzleWord(string word)
+    {
+        char[] puzzleArray = word.ToCharArray();
+        missingLetters.Clear();
+        missingLetterPositions.Clear();
+
+        int missingCount = Mathf.Max(1, word.Length / 3);
+
+        for (int i = 0; i < missingCount; i++)
+        {
+            int randomIndex = Random.Range(0, word.Length);
+            if (puzzleArray[randomIndex] != '_')
+            {
+                missingLetters.Add(word[randomIndex]);
+                missingLetterPositions.Add(randomIndex);
+                puzzleArray[randomIndex] = '_';
+            }
+        }
+
+        return new string(puzzleArray);
+    }
+
+    private void SpawnLetterChoices()
+    {
+        List<char> letterChoices = new List<char>();
+
+        foreach (char correctLetter in missingLetters)
+        {
+            letterChoices.Add(correctLetter);
+        }
+
+        while (letterChoices.Count < totalSpawnedLetters)
+        {
+            char randomWrongLetter = wrongLetterPool[Random.Range(0, wrongLetterPool.Count)];
+            if (!letterChoices.Contains(randomWrongLetter))
+            {
+                letterChoices.Add(randomWrongLetter);
+            }
+        }
+
+        letterChoices = ShuffleList(letterChoices);
+
+        float spawnRadius = 2.0f;
+
+        foreach (char letter in letterChoices)
+        {
+            Vector3 randomOffset = new Vector3(
+                Random.Range(-spawnRadius, spawnRadius),
+                Random.Range(-spawnRadius, spawnRadius),
+                0
+            );
+
+            Vector3 spawnPosition = letterSpawnArea.position + randomOffset;
+
+            GameObject letterObj = Instantiate(letterPrefab, spawnPosition, Quaternion.identity);
+            LetterObject letterScript = letterObj.GetComponent<LetterObject>();
+
+            if (letterScript != null)
+            {
+                letterScript.SetLetter(letter);
+            }
+        }
+    }
+
+    private List<char> ShuffleList(List<char> list)
+    {
+        for (int i = list.Count - 1; i > 0; i--)
+        {
+            int randomIndex = Random.Range(0, i + 1);
+            char temp = list[i];
+            list[i] = list[randomIndex];
+            list[randomIndex] = temp;
+        }
+        return list;
     }
 }
