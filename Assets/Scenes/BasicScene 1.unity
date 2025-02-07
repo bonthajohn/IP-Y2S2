@@ -207,6 +207,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Orange Jellybean
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cd348edd5ff583845b2b768381e2f2d0, type: 3}
+      propertyPath: m_TagString
+      value: OrangeJellybean
+      objectReference: {fileID: 0}
     - target: {fileID: 7188782968123970649, guid: cd348edd5ff583845b2b768381e2f2d0, type: 3}
       propertyPath: m_TagString
       value: OrangeJellybean
@@ -412,7 +416,7 @@ GameObject:
   - component: {fileID: 146048166}
   - component: {fileID: 146048165}
   - component: {fileID: 146048164}
-  - component: {fileID: 146048163}
+  - component: {fileID: 146048167}
   m_Layer: 0
   m_Name: BlueJarCollider
   m_TagString: Untagged
@@ -435,18 +439,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1467594579}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &146048163
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 146048161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb9dd7edb6187b544abf604abf6f54b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!136 &146048164
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -520,6 +512,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 146048161}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &146048167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 146048161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb9dd7edb6187b544abf604abf6f54b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  feedbackText: {fileID: 0}
+  feedbackDuration: 2
 --- !u!1 &251744400
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,7 +538,7 @@ GameObject:
   - component: {fileID: 251744405}
   - component: {fileID: 251744404}
   - component: {fileID: 251744403}
-  - component: {fileID: 251744402}
+  - component: {fileID: 251744406}
   m_Layer: 0
   m_Name: YellowJarCollider
   m_TagString: Untagged
@@ -555,18 +561,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1069293101}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &251744402
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 251744400}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb9dd7edb6187b544abf604abf6f54b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!136 &251744403
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -640,6 +634,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 251744400}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &251744406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 251744400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb9dd7edb6187b544abf604abf6f54b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  feedbackText: {fileID: 0}
+  feedbackDuration: 2
 --- !u!1 &299639867
 GameObject:
   m_ObjectHideFlags: 0
@@ -827,7 +835,7 @@ GameObject:
   - component: {fileID: 362295404}
   - component: {fileID: 362295403}
   - component: {fileID: 362295402}
-  - component: {fileID: 362295401}
+  - component: {fileID: 362295405}
   m_Layer: 0
   m_Name: GreenJarCollider
   m_TagString: Untagged
@@ -850,18 +858,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1850896269}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &362295401
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 362295399}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb9dd7edb6187b544abf604abf6f54b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!136 &362295402
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -935,6 +931,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 362295399}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &362295405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 362295399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb9dd7edb6187b544abf604abf6f54b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  feedbackText: {fileID: 0}
+  feedbackDuration: 2
 --- !u!1001 &441087506
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1192,6 +1202,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: cd348edd5ff583845b2b768381e2f2d0, type: 3}
       propertyPath: m_Name
       value: Blue Jellybean
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cd348edd5ff583845b2b768381e2f2d0, type: 3}
+      propertyPath: m_TagString
+      value: BlueJellybean
       objectReference: {fileID: 0}
     - target: {fileID: 7188782968123970649, guid: cd348edd5ff583845b2b768381e2f2d0, type: 3}
       propertyPath: m_TagString
@@ -1590,6 +1604,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Yellow Jellybean
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cd348edd5ff583845b2b768381e2f2d0, type: 3}
+      propertyPath: m_TagString
+      value: YellowJellybean
+      objectReference: {fileID: 0}
     - target: {fileID: 7188782968123970649, guid: cd348edd5ff583845b2b768381e2f2d0, type: 3}
       propertyPath: m_TagString
       value: YellowJellybean
@@ -1608,50 +1626,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1004698129}
   m_SourcePrefab: {fileID: 100100000, guid: cd348edd5ff583845b2b768381e2f2d0, type: 3}
---- !u!1 &840425472
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 840425474}
-  - component: {fileID: 840425475}
-  m_Layer: 0
-  m_Name: CardManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &840425474
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 840425472}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.15502188, y: 2.5969553, z: 5.188251}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &840425475
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 840425472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3327f51b3c062d448a6a066e5fa77240, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &928881982
 GameObject:
   m_ObjectHideFlags: 0
@@ -1861,6 +1835,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: cd348edd5ff583845b2b768381e2f2d0, type: 3}
       propertyPath: m_Name
       value: Red Jellybean
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cd348edd5ff583845b2b768381e2f2d0, type: 3}
+      propertyPath: m_TagString
+      value: RedJellybean
       objectReference: {fileID: 0}
     - target: {fileID: 7188782968123970649, guid: cd348edd5ff583845b2b768381e2f2d0, type: 3}
       propertyPath: m_TagString
@@ -2858,7 +2836,7 @@ GameObject:
   - component: {fileID: 1436818450}
   - component: {fileID: 1436818449}
   - component: {fileID: 1436818448}
-  - component: {fileID: 1436818447}
+  - component: {fileID: 1436818451}
   m_Layer: 0
   m_Name: PurpleJarCollider
   m_TagString: Untagged
@@ -2881,18 +2859,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1933799363}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1436818447
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1436818445}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb9dd7edb6187b544abf604abf6f54b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!136 &1436818448
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2966,6 +2932,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1436818445}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1436818451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1436818445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb9dd7edb6187b544abf604abf6f54b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  feedbackText: {fileID: 0}
+  feedbackDuration: 2
 --- !u!1 &1452106610
 GameObject:
   m_ObjectHideFlags: 0
@@ -2978,7 +2958,7 @@ GameObject:
   - component: {fileID: 1452106615}
   - component: {fileID: 1452106614}
   - component: {fileID: 1452106613}
-  - component: {fileID: 1452106612}
+  - component: {fileID: 1452106616}
   m_Layer: 0
   m_Name: RedJarCollider
   m_TagString: Untagged
@@ -3001,18 +2981,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 620427016}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1452106612
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1452106610}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb9dd7edb6187b544abf604abf6f54b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!136 &1452106613
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3086,6 +3054,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1452106610}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1452106616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1452106610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb9dd7edb6187b544abf604abf6f54b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  feedbackText: {fileID: 0}
+  feedbackDuration: 2
 --- !u!4 &1467594579 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: adc4d2a8ea84f6c439b381ad61eca1ba, type: 3}
@@ -3615,6 +3597,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: cd348edd5ff583845b2b768381e2f2d0, type: 3}
       propertyPath: m_Name
       value: Purple Jellybean
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cd348edd5ff583845b2b768381e2f2d0, type: 3}
+      propertyPath: m_TagString
+      value: PurpleJellybean
       objectReference: {fileID: 0}
     - target: {fileID: 7188782968123970649, guid: cd348edd5ff583845b2b768381e2f2d0, type: 3}
       propertyPath: m_TagString
@@ -4599,7 +4585,7 @@ GameObject:
   - component: {fileID: 2058383630}
   - component: {fileID: 2058383629}
   - component: {fileID: 2058383628}
-  - component: {fileID: 2058383627}
+  - component: {fileID: 2058383631}
   m_Layer: 0
   m_Name: OrangeJarCollider
   m_TagString: Untagged
@@ -4622,18 +4608,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1148248796}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2058383627
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2058383625}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb9dd7edb6187b544abf604abf6f54b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!136 &2058383628
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4707,6 +4681,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2058383625}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2058383631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2058383625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb9dd7edb6187b544abf604abf6f54b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  feedbackText: {fileID: 0}
+  feedbackDuration: 2
 --- !u!1 &2092139007
 GameObject:
   m_ObjectHideFlags: 0
@@ -4960,6 +4948,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: cd348edd5ff583845b2b768381e2f2d0, type: 3}
       propertyPath: m_Name
       value: Green Jellybean
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cd348edd5ff583845b2b768381e2f2d0, type: 3}
+      propertyPath: m_TagString
+      value: GreenJellybean
       objectReference: {fileID: 0}
     - target: {fileID: 7188782968123970649, guid: cd348edd5ff583845b2b768381e2f2d0, type: 3}
       propertyPath: m_TagString
@@ -5528,5 +5520,4 @@ SceneRoots:
   - {fileID: 928881987}
   - {fileID: 796100643}
   - {fileID: 1164534605}
-  - {fileID: 840425474}
   - {fileID: 1507978044}
