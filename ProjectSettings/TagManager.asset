@@ -15,6 +15,7 @@ TagManager:
   - RedJellybean
   - Scorable
   - Card
+  - Cube
   layers:
   - Default
   - TransparentFX
