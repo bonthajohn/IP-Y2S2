@@ -5,64 +5,60 @@ using UnityEngine;
 public class PuzzleManager : MonoBehaviour
 {
     [Header("Puzzle Settings")]
-    public Puzzle[] puzzles; // Array of puzzle sets, each containing puzzle pieces
+    public PuzzleSlot[] puzzleSlots; // Array of slots, each linking to a puzzle piece
 
     private void Start()
     {
-        // Initialize puzzles if needed
-        foreach (var puzzle in puzzles)
+        // Initialize puzzle slots
+        foreach (var slot in puzzleSlots)
         {
-            if (puzzle.puzzlePieces.Length == 0)
+            if (slot.slotObject == null)
             {
-                Debug.LogError("Puzzle is missing puzzle pieces!");
+                Debug.LogError("A slot is missing its assigned GameObject!");
             }
         }
     }
 
-    private void Update()
+    public void CheckPuzzleCompletion()
     {
-        // Check if all puzzles are completed
-        foreach (var puzzle in puzzles)
+        foreach (var slot in puzzleSlots)
         {
-            if (IsPuzzleCompleted(puzzle))
+            if (!slot.IsPieceCorrect())
             {
-                Debug.Log($"{puzzle.puzzleName} is complete!");
-                // Trigger puzzle completion actions here (e.g., unlock next puzzle, etc.)
+                Debug.Log("Puzzle is not yet complete!");
+                return;
             }
         }
+        Debug.Log("Puzzle is complete!");
+        // Trigger puzzle completion actions here
     }
 
-    private bool IsPuzzleCompleted(Puzzle puzzle)
+    public void ResetPuzzle()
     {
-        int placedPiecesCount = 0;
-        foreach (var piece in puzzle.puzzlePieces)
+        foreach (var slot in puzzleSlots)
         {
-            if (piece.IsPlacedCorrectly())
-            {
-                placedPiecesCount++;
-            }
-        }
-
-        // If all pieces are placed correctly, the puzzle is complete
-        return placedPiecesCount == puzzle.puzzlePieces.Length;
-    }
-
-    public void ResetPuzzle(int puzzleIndex)
-    {
-        if (puzzleIndex >= 0 && puzzleIndex < puzzles.Length)
-        {
-            Puzzle puzzle = puzzles[puzzleIndex];
-            foreach (var piece in puzzle.puzzlePieces)
-            {
-                piece.ResetPiece();
-            }
+            slot.ResetSlot();
         }
     }
 }
 
 [System.Serializable]
-public class Puzzle
+public class PuzzleSlot
 {
-    public string puzzleName; // Name for the puzzle (for better identification)
-    public PuzzlePiece[] puzzlePieces; // Array of puzzle pieces for this specific puzzle
+    public GameObject slotObject; // The actual GameObject representing the slot
+    public PuzzlePiece puzzlePiece; // The puzzle piece that should go in this slot
+
+    public bool IsPieceCorrect()
+    {
+        if (puzzlePiece == null || slotObject == null) return false;
+        return Vector3.Distance(puzzlePiece.transform.position, slotObject.transform.position) < 0.1f;
+    }
+
+    public void ResetSlot()
+    {
+        if (puzzlePiece != null)
+        {
+            puzzlePiece.ResetPiece();
+        }
+    }
 }
