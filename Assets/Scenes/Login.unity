@@ -1652,7 +1652,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1753fc721ad748b68d849ac5a37c31b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: Peppermint Puzzle Path
+  sceneName: Peppermint Puzzle Path 1
 --- !u!65 &454139753
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3920,7 +3920,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1007616645}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b850d1110b6c240f18a085a21335d97a, type: 3}
   m_Name: 
