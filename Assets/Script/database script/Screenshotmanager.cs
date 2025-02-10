@@ -19,6 +19,9 @@ public class ScreenshotManager : MonoBehaviour
 
     private Keyboard keyboard;
 
+    [Header("VR Input Actions")]
+    public InputActionProperty fireAction; // Assigned in Inspector for Quest 2 Buttons (A/B)
+
     private void Start()
     {
         // Find the AuthManager component in the scene
@@ -38,6 +41,20 @@ public class ScreenshotManager : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        // Enable input actions for Quest 2 controller buttons (A/B)
+        fireAction.action.performed += OnFire;
+        fireAction.action.Enable();
+    }
+
+    private void OnDisable()
+    {
+        // Disable input actions when the script is disabled
+        fireAction.action.performed -= OnFire;
+        fireAction.action.Disable();
+    }
+
     private void Update()
     {
         Gamepad gamepad = Gamepad.current;
@@ -48,13 +65,19 @@ public class ScreenshotManager : MonoBehaviour
             return; // Exit Update() early if the player is not logged in
         }
 
-        // Check for screenshot input only when the user is logged in
-
+        // Check for screenshot input via keyboard or gamepad
         if ((keyboard != null && keyboard.eKey.wasPressedThisFrame) ||
             (gamepad != null && gamepad.buttonSouth.wasPressedThisFrame))
         {
             TakeScreenshot();
         }
+    }
+
+    private void OnFire(InputAction.CallbackContext context)
+    {
+        // Called when A or B button is pressed
+        Debug.Log("VR Button Pressed: Taking Screenshot!");
+        TakeScreenshot();
     }
 
     public void TakeScreenshot()
@@ -183,6 +206,4 @@ public class ScreenshotManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject); // Make this object persistent across scenes
     }
-
-
 }
