@@ -44,15 +44,22 @@ public class GameBoardManager : MonoBehaviour
 
     private void SpawnCards()
     {
+        GameObject spawnArea = GameObject.Find("CardSpawnArea"); // Find the empty GameObject
+        if (spawnArea == null)
+        {
+            Debug.LogError("CardSpawnArea not found in the scene!");
+            return;
+        }
+
         int index = 0;
-        float spacing = 0.4f; // Increase spacing between cards
+        float spacing = 0.15f; // Space between cards
 
         for (int x = 0; x < 4; x++)
         {
             for (int y = 0; y < 4; y++)
             {
-                Vector3 position = new Vector3(x * spacing, 0, y * spacing);
-                GameObject card = Instantiate(cardPrefab, position, Quaternion.identity);
+                Vector3 position = spawnArea.transform.position + new Vector3(x * spacing, 0, y * spacing);
+                GameObject card = Instantiate(cardPrefab, position, Quaternion.identity, spawnArea.transform);
                 CardController cardScript = card.GetComponent<CardController>();
                 cardScript.AssignImageMaterial(imageMaterials[index]);
                 cardScript.blankMaterial = blankMaterial;
@@ -60,6 +67,7 @@ public class GameBoardManager : MonoBehaviour
             }
         }
     }
+
 
 
     public void CardRevealed(CardController card)
