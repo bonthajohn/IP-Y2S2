@@ -16,6 +16,9 @@ TagManager:
   - Scorable
   - Card
   - Cube
+  - Puzzle1
+  - PiggyBank
+  - Coin
   layers:
   - Default
   - TransparentFX

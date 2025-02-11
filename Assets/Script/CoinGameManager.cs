@@ -6,9 +6,9 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class CoinGameManager : MonoBehaviour
 {
-    public ChestCounter cube1;
-    public ChestCounter cube2;
-    public ChestCounter cube3;
+    public PiggyBankCounter piggyBank1;
+    public PiggyBankCounter piggyBank2;
+    public PiggyBankCounter piggyBank3;
     public TextMeshProUGUI messageText;
     public XRBaseInteractable submitButton; // Reference to XR UI Button
 
@@ -24,9 +24,9 @@ public class CoinGameManager : MonoBehaviour
         int num2 = Random.Range(1, 10 - num1);
         int num3 = 10 - (num1 + num2);
 
-        cube1.SetRequiredCount(num1);
-        cube2.SetRequiredCount(num2);
-        cube3.SetRequiredCount(num3);
+        piggyBank1.SetRequiredCount(num1);
+        piggyBank2.SetRequiredCount(num2);
+        piggyBank3.SetRequiredCount(num3);
     }
 
     private void OnButtonPressed(SelectEnterEventArgs args)
@@ -36,12 +36,12 @@ public class CoinGameManager : MonoBehaviour
 
     public void CheckResults()
     {
-        int total = cube1.GetCurrentCount() + cube2.GetCurrentCount() + cube3.GetCurrentCount();
+        int total = piggyBank1.GetCurrentCount() + piggyBank2.GetCurrentCount() + piggyBank3.GetCurrentCount();
 
         if (total == 10 &&
-            cube1.GetCurrentCount() == cube1.requiredCount &&
-            cube2.GetCurrentCount() == cube2.requiredCount &&
-            cube3.GetCurrentCount() == cube3.requiredCount)
+            piggyBank1.GetCurrentCount() == piggyBank1.requiredCount &&
+            piggyBank2.GetCurrentCount() == piggyBank2.requiredCount &&
+            piggyBank3.GetCurrentCount() == piggyBank3.requiredCount)
         {
             messageText.text = "Correct! Well done!";
         }
