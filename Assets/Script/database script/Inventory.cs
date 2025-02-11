@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.InputSystem;  // For the new Input System
+using UnityEngine.InputSystem; // For the new Input System
 
 public class Inventory : MonoBehaviour
 {
@@ -9,6 +9,9 @@ public class Inventory : MonoBehaviour
 
     public Transform playerCamera;  // Assign the player's camera (usually the VR headset)
     public float spawnDistance = 1.5f;  // Distance in front of the player
+
+    [Header("VR Input Actions")]
+    public InputActionProperty bButtonAction; // Assigned in the Inspector (Quest 2 B Button)
 
     void Start()
     {
@@ -19,15 +22,22 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        // Enable and assign the B button action
+        bButtonAction.action.performed += OnBButtonPressed;
+        bButtonAction.action.Enable();
+    }
+
+    private void OnDisable()
+    {
+        // Disable the B button action when the object is disabled
+        bButtonAction.action.performed -= OnBButtonPressed;
+        bButtonAction.action.Disable();
+    }
+
     void Update()
     {
-        // Check if the B button is pressed (for VR Quest 2 controller)
-        //if (OVRInput.GetDown(OVRInput.Button.Two))
-        //{
-        //    Debug.Log("B button pressed (VR Controller)");  // Debug log to check if button press is detected
-        //    ToggleUI();
-        //}
-
         // For testing with XR Simulator (press "2" key using the new Input System)
         if (Keyboard.current.digit2Key.wasPressedThisFrame)
         {
@@ -36,11 +46,17 @@ public class Inventory : MonoBehaviour
         }
 
         // Add keyboard input for testing the B button (press 'B' key)
-        if (Keyboard.current.bKey.wasPressedThisFrame)  // Simulate pressing the "B" key
+        if (Keyboard.current.bKey.wasPressedThisFrame)
         {
-            Debug.Log("B key pressed (Keyboard)");  // Debug log for the "B" key press
+            Debug.Log("B key pressed (Keyboard)");
             ToggleUI();
         }
+    }
+
+    private void OnBButtonPressed(InputAction.CallbackContext context)
+    {
+        Debug.Log("B Button Pressed (VR Controller)");
+        ToggleUI();
     }
 
     void ToggleUI()

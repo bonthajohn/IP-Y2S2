@@ -1257,6 +1257,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "inventory",
+                    "type": "Button",
+                    "id": "0a7b93ad-f52a-4155-8d7f-1b30a0661fa3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1510,6 +1519,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "screenshot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f2f55646-61a2-4da6-b87e-ee4a8ef14951",
+                    "path": "<XRController>{RightHand}/{SecondaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "inventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
