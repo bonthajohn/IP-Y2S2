@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &4242145898527371451
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 32.609657
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 32.609657
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 32.609657
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.0996
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -6.5866
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
+      propertyPath: m_Name
+      value: cotton candy trees (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects:
+    - {fileID: -7249566728760100925, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
+    - {fileID: 8523772855540137367, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
+    - {fileID: -5539764629200458662, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
+    - {fileID: -298092508047035362, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
+    - {fileID: -655515190766560270, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
+    - {fileID: 8132464455636944654, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
+    - {fileID: 2759395992491043273, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
+    - {fileID: 4014108605683460669, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 528944fe8ce4bba4196b2e4698360488, type: 3}
