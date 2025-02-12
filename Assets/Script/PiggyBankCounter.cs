@@ -3,10 +3,10 @@ using TMPro;
 
 public class PiggyBankCounter : MonoBehaviour
 {
-    public int requiredCount;  // Randomized number from GameManager
+    public int requiredCount;
     private int currentCount = 0;
-    public TextMeshProUGUI numberText;  // Assign in Inspector
-    public Transform coinInsertPoint;  // Assign a Transform representing the coin slot
+    public TextMeshProUGUI numberText;
+    public Transform coinInsertPoint;
 
     public void AddCoin()
     {
@@ -21,6 +21,7 @@ public class PiggyBankCounter : MonoBehaviour
     public void SetRequiredCount(int newCount)
     {
         requiredCount = newCount;
-        numberText.text = requiredCount.ToString(); // Update the text on top of piggy bank
+        numberText.text = requiredCount.ToString();
+        currentCount = 0; // Reset count at the start
     }
 }

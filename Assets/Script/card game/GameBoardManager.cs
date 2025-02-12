@@ -1,19 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro; // Add this namespace
 
 public class GameBoardManager : MonoBehaviour
 {
     public GameObject cardPrefab;
     public Material blankMaterial;
+    public TextMeshProUGUI congratulationsText; // Reference to the TextMeshPro UI text
 
     private List<Material> imageMaterials = new List<Material>();
     private List<CardController> revealedCards = new List<CardController>();
+    private int totalCards; // Total cards in the game
+    private int remainingCards; // Track remaining cards
 
     private void Start()
     {
         LoadCardImages();
         SpawnCards();
+        totalCards = 16; // 4x4 grid, so 16 cards total
+        remainingCards = totalCards; // Set remaining cards to total at the start
+        congratulationsText.gameObject.SetActive(false); // Hide text initially
     }
 
     private void LoadCardImages()
@@ -39,8 +46,6 @@ public class GameBoardManager : MonoBehaviour
 
         imageMaterials.Shuffle(); // Shuffle pairs
     }
-
-
 
     private void SpawnCards()
     {
@@ -68,8 +73,6 @@ public class GameBoardManager : MonoBehaviour
         }
     }
 
-
-
     public void CardRevealed(CardController card)
     {
         revealedCards.Add(card);
@@ -83,11 +86,11 @@ public class GameBoardManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
 
-        if (revealedCards[0].GetComponent<Renderer>().material.mainTexture ==
-            revealedCards[1].GetComponent<Renderer>().material.mainTexture)
+        if (revealedCards[0].GetComponent<Renderer>().material.mainTexture == revealedCards[1].GetComponent<Renderer>().material.mainTexture)
         {
             revealedCards[0].DestroyCard();
             revealedCards[1].DestroyCard();
+            remainingCards -= 2; // Decrease remaining cards count after a match
         }
         else
         {
@@ -96,6 +99,18 @@ public class GameBoardManager : MonoBehaviour
         }
 
         revealedCards.Clear();
+
+        // Check if all cards are destroyed
+        if (remainingCards == 0)
+        {
+            ShowCongratulations();
+        }
+    }
+
+    private void ShowCongratulations()
+    {
+        congratulationsText.gameObject.SetActive(true); // Show the text
+        congratulationsText.text = "Congratulations! You've matched all the cards!";
     }
 }
 

@@ -10,11 +10,11 @@ public class CoinGameManager : MonoBehaviour
     public PiggyBankCounter piggyBank2;
     public PiggyBankCounter piggyBank3;
     public TextMeshProUGUI messageText;
-    public XRBaseInteractable submitButton; // Reference to XR UI Button
+    public XRBaseInteractable submitButton;
 
     private void Start()
     {
-        submitButton.selectEntered.AddListener(OnButtonPressed); // VR button interaction
+        submitButton.selectEntered.AddListener(OnButtonPressed);
         RandomizeNumbers();
     }
 
@@ -36,12 +36,17 @@ public class CoinGameManager : MonoBehaviour
 
     public void CheckResults()
     {
-        int total = piggyBank1.GetCurrentCount() + piggyBank2.GetCurrentCount() + piggyBank3.GetCurrentCount();
+        int count1 = piggyBank1.GetCurrentCount();
+        int count2 = piggyBank2.GetCurrentCount();
+        int count3 = piggyBank3.GetCurrentCount();
+        int total = count1 + count2 + count3;
+
+        Debug.Log($"PiggyBank Counts: {count1}, {count2}, {count3} (Total: {total})");
 
         if (total == 10 &&
-            piggyBank1.GetCurrentCount() == piggyBank1.requiredCount &&
-            piggyBank2.GetCurrentCount() == piggyBank2.requiredCount &&
-            piggyBank3.GetCurrentCount() == piggyBank3.requiredCount)
+            count1 == piggyBank1.requiredCount &&
+            count2 == piggyBank2.requiredCount &&
+            count3 == piggyBank3.requiredCount)
         {
             messageText.text = "Correct! Well done!";
         }

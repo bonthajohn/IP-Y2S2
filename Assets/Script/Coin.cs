@@ -1,19 +1,51 @@
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class Coin : MonoBehaviour
 {
     private bool isMovingToPiggyBank = false;
     private Transform targetSlot;
     private float moveSpeed = 5f;
+    private PiggyBankCounter assignedPiggyBank;
+    private bool hasBeenCounted = false;
+
+    private XRGrabInteractable grabInteractable;
+
+    private void Awake()
+    {
+        grabInteractable = GetComponent<XRGrabInteractable>();
+    }
+
+    private void OnEnable()
+    {
+        grabInteractable.selectExited.AddListener(OnRelease);
+    }
+
+    private void OnDisable()
+    {
+        grabInteractable.selectExited.RemoveListener(OnRelease);
+    }
+
+    private void OnRelease(SelectExitEventArgs args)
+    {
+        if (!args.isCanceled) // Only start moving the coin if the release wasn't canceled
+        {
+            isMovingToPiggyBank = true;
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!isMovingToPiggyBank) return;
+
         if (other.CompareTag("PiggyBank"))
         {
             PiggyBankCounter piggyBank = other.GetComponent<PiggyBankCounter>();
             if (piggyBank != null)
             {
-                targetSlot = piggyBank.coinInsertPoint; // Get the coin slot position
+                targetSlot = piggyBank.coinInsertPoint;
+                assignedPiggyBank = piggyBank;
                 isMovingToPiggyBank = true;
             }
         }
@@ -23,20 +55,19 @@ public class Coin : MonoBehaviour
     {
         if (isMovingToPiggyBank && targetSlot != null)
         {
-            // Move the coin smoothly to the insert point
             transform.position = Vector3.MoveTowards(transform.position, targetSlot.position, moveSpeed * Time.deltaTime);
 
-            // Check if the coin has reached the slot
             if (Vector3.Distance(transform.position, targetSlot.position) < 0.01f)
             {
                 isMovingToPiggyBank = false;
-                PiggyBankCounter piggyBank = targetSlot.GetComponentInParent<PiggyBankCounter>();
-                if (piggyBank != null)
+
+                if (!hasBeenCounted && assignedPiggyBank != null)
                 {
-                    piggyBank.AddCoin();
+                    assignedPiggyBank.AddCoin();
+                    hasBeenCounted = true;
                 }
 
-                Destroy(gameObject); // Remove coin after insertion
+                Destroy(gameObject); // Destroy the coin after insertion
             }
         }
     }

@@ -7,6 +7,17 @@ public class JellybeanCollectible : MonoBehaviour
     public float feedbackDuration = 2f; // Duration to show the feedback message
     public Transform jarBottomPosition; // Assign in Inspector: The bottom position inside the jar
 
+    // Dictionary to track the number of jellybeans in each jar
+    private static int redJarCount = 0;
+    private static int orangeJarCount = 0;
+    private static int yellowJarCount = 0;
+    private static int greenJarCount = 0;
+    private static int blueJarCount = 0;
+    private static int purpleJarCount = 0;
+
+    // Constant to determine when the jar is full
+    private const int jellybeansRequired = 3;
+
     private void OnCollisionEnter(Collision collision)
     {
         string tag = collision.gameObject.tag;
@@ -20,8 +31,17 @@ public class JellybeanCollectible : MonoBehaviour
             (jarName == "BlueJarCollider" && tag == "BlueJellybean") ||
             (jarName == "PurpleJarCollider" && tag == "PurpleJellybean"))
         {
-            // Move the jellybean to the bottom of the jar
+            // Place the jellybean in the jar
             PlaceJellybeanInJar(collision.gameObject);
+
+            // Update the count for the corresponding jar
+            UpdateJarCount(jarName);
+
+            // Check if all jars are full
+            if (AllJarsFull())
+            {
+                ShowFeedback("Congratulations! All jars are full!");
+            }
         }
         else
         {
@@ -45,6 +65,28 @@ public class JellybeanCollectible : MonoBehaviour
                 rb.useGravity = false;
             }
         }
+    }
+
+    private void UpdateJarCount(string jarName)
+    {
+        // Increase the count for the corresponding jar
+        if (jarName == "RedJarCollider") redJarCount++;
+        if (jarName == "OrangeJarCollider") orangeJarCount++;
+        if (jarName == "YellowJarCollider") yellowJarCount++;
+        if (jarName == "GreenJarCollider") greenJarCount++;
+        if (jarName == "BlueJarCollider") blueJarCount++;
+        if (jarName == "PurpleJarCollider") purpleJarCount++;
+    }
+
+    private bool AllJarsFull()
+    {
+        // Check if all jars have exactly 3 jellybeans
+        return redJarCount == jellybeansRequired &&
+               orangeJarCount == jellybeansRequired &&
+               yellowJarCount == jellybeansRequired &&
+               greenJarCount == jellybeansRequired &&
+               blueJarCount == jellybeansRequired &&
+               purpleJarCount == jellybeansRequired;
     }
 
     private void ShowFeedback(string message)

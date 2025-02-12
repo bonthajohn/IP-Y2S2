@@ -419,6 +419,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: XR Origin (XR Rig)
       objectReference: {fileID: 0}
+    - target: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -545,6 +549,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 7f675b4a9ce290143a6f29050e0274a1, type: 3}
       propertyPath: m_Name
       value: UE4guy
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7f675b4a9ce290143a6f29050e0274a1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1628,8 +1636,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1.1044227, z: 0.9999999}
+  m_Center: {x: 0.000000005782124, y: 0.052211344, z: -0.0000000020789102}
 --- !u!33 &1287873841022071900
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2288,8 +2296,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.99999887, y: 1.2021897, z: 1}
+  m_Center: {x: 0.000000011485822, y: 0.10109483, z: -0.0000000041335797}
 --- !u!135 &1876522308111799539
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5273,8 +5281,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.99999887, y: 1.1120119, z: 1}
+  m_Center: {x: 0.000000006363089, y: 0.056006037, z: -0.0000000022899829}
 --- !u!4 &7931424368946338989
 Transform:
   m_ObjectHideFlags: 0
