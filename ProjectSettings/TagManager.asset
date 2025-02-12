@@ -18,7 +18,9 @@ TagManager:
   - Cube
   - Puzzle1
   - PiggyBank
-  - Coin
+  - Coins
+  - Key
+  - obj1
   layers:
   - Default
   - TransparentFX

@@ -1,67 +1,153 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.InputSystem; // For the new Input System
+using UnityEngine.InputSystem;
+using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+
+[System.Serializable]
+public class InventoryItem
+{
+    public string itemName;
+    public GameObject questionMark;
+    public GameObject actualItem;
+}
 
 public class Inventory : MonoBehaviour
 {
-    public GameObject uiPrefab;  // Assign your UI Canvas prefab here
+    public GameObject uiPrefab;
     private GameObject spawnedUI;
 
-    public Transform playerCamera;  // Assign the player's camera (usually the VR headset)
-    public float spawnDistance = 1.5f;  // Distance in front of the player
+    private Transform playerCamera;
+    public float spawnDistance = 1.5f;
 
     [Header("VR Input Actions")]
-    public InputActionProperty bButtonAction; // Assigned in the Inspector (Quest 2 B Button)
+    public InputActionProperty bButtonAction;
 
-    void Start()
+    [Header("Inventory Items (Setup in Inspector)")]
+    public List<InventoryItem> inventoryItems = new List<InventoryItem>();
+
+    private Dictionary<string, InventoryItem> inventoryDictionary = new Dictionary<string, InventoryItem>();
+
+    private void Awake()
     {
+        DontDestroyOnLoad(gameObject);
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void Start()
+    {
+        FindPlayerCamera();
+
         if (uiPrefab != null)
         {
             spawnedUI = Instantiate(uiPrefab);
-            spawnedUI.SetActive(false); // Initially hide the UI
+            spawnedUI.SetActive(false);
+        }
+
+        foreach (var item in inventoryItems)
+        {
+            if (item.questionMark != null && item.actualItem != null)
+            {
+                inventoryDictionary[item.itemName] = item;
+                item.questionMark.SetActive(true);
+                item.actualItem.SetActive(false);
+            }
+        }
+    }
+
+    public void CollectItem(string itemName)
+    {
+        if (inventoryDictionary.ContainsKey(itemName))
+        {
+            InventoryItem item = inventoryDictionary[itemName];
+
+            Debug.Log($"Collected: {itemName}");
+
+            if (item.questionMark != null)
+            {
+                item.questionMark.SetActive(false);
+            }
+
+            if (item.actualItem != null)
+            {
+                item.actualItem.SetActive(true);
+            }
+
+            UpdateInventoryUI(); // 🔹 UI gets updated dynamically when collecting items
+        }
+        else
+        {
+            Debug.LogWarning($"Item '{itemName}' not found in inventory!");
+        }
+    }
+
+    private void UpdateInventoryUI()
+    {
+        Debug.Log("Updating Inventory UI...");
+
+        if (spawnedUI != null)
+        {
+            spawnedUI.SetActive(false);
+            spawnedUI.SetActive(true);   // 🔹 Forces UI to refresh
+        }
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        FindPlayerCamera();
+    }
+
+    private void FindPlayerCamera()
+    {
+        GameObject cameraObject = GameObject.FindGameObjectWithTag("MainCamera");
+        if (cameraObject != null)
+        {
+            playerCamera = cameraObject.transform;
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'MainCamera'. Make sure your player camera has the correct tag.");
         }
     }
 
     private void OnEnable()
     {
-        // Enable and assign the B button action
         bButtonAction.action.performed += OnBButtonPressed;
         bButtonAction.action.Enable();
     }
 
     private void OnDisable()
     {
-        // Disable the B button action when the object is disabled
         bButtonAction.action.performed -= OnBButtonPressed;
         bButtonAction.action.Disable();
     }
 
-    void Update()
+    private void Update()
     {
-        // For testing with XR Simulator (press "2" key using the new Input System)
         if (Keyboard.current.digit2Key.wasPressedThisFrame)
         {
-            Debug.Log("2 key pressed (XR Simulator)");
             ToggleUI();
         }
 
-        // Add keyboard input for testing the B button (press 'B' key)
         if (Keyboard.current.bKey.wasPressedThisFrame)
         {
-            Debug.Log("B key pressed (Keyboard)");
             ToggleUI();
         }
     }
 
     private void OnBButtonPressed(InputAction.CallbackContext context)
     {
-        Debug.Log("B Button Pressed (VR Controller)");
         ToggleUI();
     }
 
-    void ToggleUI()
+    private void ToggleUI()
     {
-        if (spawnedUI == null) return;
+        if (spawnedUI == null || playerCamera == null) return;
 
         bool isActive = spawnedUI.activeSelf;
         spawnedUI.SetActive(!isActive);
@@ -72,9 +158,9 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    void PositionUI()
+    private void PositionUI()
     {
-        if (spawnedUI == null) return;
+        if (spawnedUI == null || playerCamera == null) return;
 
         Vector3 spawnPosition = playerCamera.position + playerCamera.forward * spawnDistance;
         spawnPosition.y = playerCamera.position.y;
