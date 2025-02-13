@@ -5,10 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Login.unity
     guid: 9c5d5484862cb43fcbf0f12321500bc8
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Peppermint Puzzle Path 1.unity
     guid: 8d308817b871a4734a1819f949aeadfa
   - enabled: 0
@@ -17,9 +17,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/CoinMathGame.unity
     guid: 5937625dcfaf1e440bb25defd2bddb77
+  - enabled: 1
+    path: Assets/Scenes/spellinggame 1.unity
+    guid: 71fbb31e7c13a4732bcbb46ab957fcbb
   - enabled: 0
-    path: Assets/Scenes/CardMatchingGame.unity
-    guid: 01e9efe867ec09844b6868de1e1260de
+    path: Assets/Scenes/CardMatchingGame 1.unity
+    guid: d06039d6da3e64337b66ee10fad3decc
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: bfa1182bd221b4ca89619141f66f1260, type: 2}
     Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: dc5a169419fa04987b057f65238cf3ba, type: 2}

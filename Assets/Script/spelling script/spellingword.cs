@@ -273,12 +273,16 @@ public class WordGame : MonoBehaviour
         foreach (char letter in letterChoices)
         {
             Vector3 randomOffset = new Vector3(
-                Random.Range(-spawnRadius, spawnRadius),
-                Random.Range(-spawnRadius, spawnRadius),
+                Random.Range(-spawnRadius, spawnRadius), // Random X position
+                0, // Fixed Y position
                 0
             );
 
-            Vector3 spawnPosition = letterSpawnArea.position + randomOffset;
+            Vector3 spawnPosition = new Vector3(
+                letterSpawnArea.position.x + randomOffset.x,
+                letterSpawnArea.position.y, // Keep the same Y position
+                letterSpawnArea.position.z
+            );
 
             GameObject letterObj = Instantiate(letterPrefab, spawnPosition, Quaternion.identity, letterSpawnArea);
             LetterObject letterScript = letterObj.GetComponent<LetterObject>();
@@ -288,6 +292,7 @@ public class WordGame : MonoBehaviour
                 letterScript.SetLetter(letter);
             }
         }
+
     }
 
     private List<T> ShuffleList<T>(List<T> list)

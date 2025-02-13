@@ -21,6 +21,7 @@ TagManager:
   - Coins
   - Key
   - obj1
+  - Letter
   layers:
   - Default
   - TransparentFX
