@@ -11,15 +11,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Peppermint Puzzle Path 1.unity
     guid: 8d308817b871a4734a1819f949aeadfa
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/JellybeanGame.unity
     guid: 49eff146233426548835e33f0eeaf9ea
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/CoinMathGame.unity
     guid: 5937625dcfaf1e440bb25defd2bddb77
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/CardMatchingGame.unity
     guid: 01e9efe867ec09844b6868de1e1260de
+  - enabled: 1
+    path: Assets/Scenes/test.unity
+    guid: ee7caa160bba4c948813c934bb086f67
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: bfa1182bd221b4ca89619141f66f1260, type: 2}
     Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: dc5a169419fa04987b057f65238cf3ba, type: 2}
